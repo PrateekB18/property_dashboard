@@ -35,7 +35,7 @@ bed_dict = dict(zip(bedrooms['Label'], bedrooms['Value']))
 
 type_dict = {"Apartment": "Unit", "House": "House"}
 
-demo_dict = {'Weekly Rent ($)':'Rent', 'Weekly Household Income ($)':'Income',
+demo_dict = {'Weekly Rent':'Rent', 'Weekly Household Income':'Income',
              'Education':'Education','Occupation':'Occupation',
              'Modes of Transport to Work':'Transport',
              'Age':'Age','Marital Status':'MaritalStatus',
@@ -468,14 +468,20 @@ def demo_plot1(dropdown1,dropdown4):
          'Sales<br>Workers', 'Managers',
          'Machinery<br>Operators<br>& Drivers',
          'Inadequately Described']
-    
+    if demo == "Rent":
+        labels = ['$450 to $549', '$350 to $449','$550 to $649','$275 to $349',
+         '$650 to $749','Other']
+    if demo == "Income":
+        labels = ['$2000 to $2499','$4000+','$2500 to $2999','$3000 to $3499',
+         '$1000 to $1249','Other']
+        
     colors = ['#20a9ca','#1EB6B8','#1bc3a5',
               '#ffb24c','#FF8C40','#ff6633']
     
     if demo == 'Income':
-        name = 'Weekly<br>Household<br>Income ($)'
+        name = 'Weekly<br>Household<br>Income'
     elif demo == 'Rent':
-        name = 'Weekly<br>Rent ($)'
+        name = 'Weekly<br>Rent'
     elif demo == 'Transport':
         name = 'Mode of<br>Transport<br>to Work'
     else:
@@ -619,4 +625,7 @@ def demo_plot2(dropdown1,dropdown5):
     
     return fig
 
+
+
 app.run_server(debug=True)
+
