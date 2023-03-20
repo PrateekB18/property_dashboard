@@ -1,5 +1,8 @@
 # Sydney Property Market Dashboard
 
-Dash application to view property data for Greater Sydney area of New South Wales. Rent, Price and Demographic information can be viewed from 2019 Q1 to 2022 Q4. Area map will only work with google map Embed API key.
+A user-friendly Dash application that allows users to view property data for suburbs in the Greater Sydney area of New South Wales, Australia. With this dashboard, you can access a variety of key property market indicators, including a area map, quarterly rental and price trends, and demographic information based on the latest 2021 census data.
+
+Note: To use the area map feature, you'll need to obtain a Google Map Embed API key. 
+
 
 <img src="https://i.imgur.com/bPqiaX7.png" alt="Property Dashboard">
