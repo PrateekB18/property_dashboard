@@ -6,7 +6,6 @@ Created on Thu Oct 27 16:37:32 2022
 
 Dashboard to view Greater Sydney property market stats
 """
-
 import sqlite3
 import numpy as np
 import math
@@ -18,6 +17,7 @@ from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 
+google_api = "Add Google Map Embed API here"
 
 con = sqlite3.connect('Suburb_names.db')
 suburbs = pd.read_sql('SELECT * FROM SubNames' , con)
@@ -52,7 +52,7 @@ app.layout = html.Div([
                                     "margin-left":"20%",
                                     'width':'60%',
                                     "margin-bottom":"15px",
-                                    "margin-top":"40px"}))]),
+                                    "margin-top":"10px"}))]),
     
     dbc.Row([dbc.Col(html.H2('Greater Sydney Property Market Dashboard', 
                              style = {'font-family':"Candara",
@@ -64,28 +64,22 @@ app.layout = html.Div([
                                     "margin-left":"34%",
                                     'width':'32%',
                                     "margin-top":"5px",
-                                    "margin-bottom":"50px"}))]),
+                                    "margin-bottom":"20px"}))]),
     
     dbc.Row([
         dbc.Col([ html.Label(['Select Suburb'], 
                              style={'font-family':"Candara",
-                                    'font-size': '20px',
+                                    'font-size': '18px',
                                     "text-align": "center",
-                                    "marginLeft":'20px'})]),
-        dbc.Col([ html.Label(['Select Number of Bedrooms'], 
-                             style={'font-family':"Candara",
-                                    'font-size': '20px', 
-                                    "text-align": "center",
-                                    "marginLeft":'20px'})]),
-        dbc.Col([ html.Label(['Select Property Type'], 
-                             style={'font-family':"Candara",
-                                    'font-size': '20px', 
-                                    "text-align": "center",
-                                    "marginLeft":'20px'})]),
-        ],justify = 'center'),
+                                    "marginLeft":'100px',
+                                    "margin-top":"0px"})])]),
     
     dbc.Row([
-        dbc.Col([ dcc.Dropdown(
+        
+        dbc.Col([
+            
+            dbc.Row([
+                dcc.Dropdown(
                 id='dropdown1',
                 options=[{'label':label, 'value': value} for label, value in suburb_dict.items()], 
                 value = '[Alexandria]',
@@ -93,36 +87,63 @@ app.layout = html.Div([
                 
                 style=dict(
                     verticalAlign="middle",
-                    marginLeft ='10px',
-                    width='95%',
+                    marginLeft ='50px',
+                    width='70%',
                     )),
                 ]),
+    
+            dbc.Row([
+                dbc.Col([ html.Label(['Select Number of Bedrooms'], 
+                                     style={'font-family':"Candara",
+                                            'font-size': '18px', 
+                                            "text-align": "center",
+                                            "marginLeft":'100px',
+                                            "margin-top":"30px"})])]),
+    
+            dbc.Row([
+                dbc.Col([ dcc.Dropdown(
+                        id='dropdown2',
+                        options=[{'label':label, 'value': value} for label, value in bed_dict.items()], 
+                        value = '2',
+                        placeholder="Select Bedrooms",
+                        style=dict(
+                            verticalAlign="middle",
+                            marginLeft ='50px',
+                            width='70%'
+                            )),
+                        ])]),
+            
+            dbc.Row([
+                dbc.Col([ html.Label(['Select Property Type'], 
+                                     style={'font-family':"Candara",
+                                            'font-size': '18px', 
+                                            "text-align": "center",
+                                            "marginLeft":'100px',
+                                            "margin-top":"30px"})])]),
         
-        dbc.Col([ dcc.Dropdown(
-                id='dropdown2',
-                options=[{'label':label, 'value': value} for label, value in bed_dict.items()], 
-                value = '2',
-                placeholder="Select Bedrooms",
-                style=dict(
-                    verticalAlign="middle",
-                    marginLeft ='10px',
-                    width='95%'
-                    )),
-                ]),
+            dbc.Row([
+                dbc.Col([ dcc.Dropdown(
+                        id='dropdown3',
+                        options=[{'label':label, 'value': value}for label, value in type_dict.items()], 
+                        value = 'Unit',
+                        placeholder="Select Property Type",
+                        style=dict(
+                            verticalAlign="middle",
+                            marginLeft ='50px',
+                            width='70%'
+                            ))
+                        ])]),
+            ]),
         
-        dbc.Col([ dcc.Dropdown(
-                id='dropdown3',
-                options=[{'label':label, 'value': value}for label, value in type_dict.items()], 
-                value = 'Unit',
-                placeholder="Select Property Type",
-                style=dict(
-                    verticalAlign="middle",
-                    marginLeft ='10px',
-                    width='95%'
-                    ))
-                ]),
-            ],justify = 'start'),
-          
+        dbc.Col([
+            html.Div([
+                html.Iframe(id="google-map", 
+                            width='90%',
+                            height='225px',
+                            src=f"https://www.google.com/maps/embed/v1/place?key={google_api}&q=Alexandria,NSW"
+                            )
+            ]),]),
+    ]),
 
         dbc.Row([
             dbc.Col([
@@ -130,7 +151,7 @@ app.layout = html.Div([
                     dcc.Graph(id="graph_price")],
                     style = {'float':'left', 
                              'width':'95%',
-                             "margin-top":"30px"})
+                             "margin-top":"10px"})
                 ]),
         
             dbc.Col([
@@ -139,19 +160,18 @@ app.layout = html.Div([
                     style = {'float':'right',
                              "margin-right":"15px",
                              'width':'90%',
-                             "margin-top":"30px"})
+                             "margin-top":"10px"})
                 ]),
             ]),
-        
-        
-        dbc.Row([dbc.Col(html.H2('Demographic Information (2021 Census)', 
+
+        dbc.Row([dbc.Col(html.H2('Demographic Information for Alexandria (2021 Census)',
+                                 id="demogrphic-heading",
                                  style = {'font-family':"Candara",
                                           'font-size': '22px',
                                           "text-align": "center",
-                                          "margin-bottom":"50px",
+                                          "margin-bottom":"10px",
                                           "margin-top":"30px"}))]),
-        
-        
+
         dbc.Row([
             dbc.Col([
                 dcc.Dropdown(
@@ -186,7 +206,7 @@ app.layout = html.Div([
                     dcc.Graph(id="graph_demo1")],
                     style = {'float':'left', 
                              'width':'95%',
-                             "margin-bottom":"50px"})
+                             "margin-bottom":"0px"})
                 ]),
         
             dbc.Col([
@@ -194,7 +214,7 @@ app.layout = html.Div([
                     dcc.Graph(id="graph_demo2")],
                     style = {'float':'right', 
                              'width':'95%',
-                             "margin-bottom":"50px",
+                             "margin-bottom":"0px",
                              "margin-left":"50px"})
                 ]),
             ]),
@@ -204,9 +224,26 @@ app.layout = html.Div([
                                         "background": "rgb(37,202,160)",
                                         "margin-left":"20%",
                                         'width':'60%',
-                                        "margin-top":"15px"}))]),
-        
+                                        "margin-top":"5px"}))]),     
 ])
+
+@app.callback(
+    Output("google-map", "src"), 
+    Input('dropdown1', 'value'), 
+    prevent_initial_call=True
+)
+
+def update_google_map(dropdown1):
+    return f"https://www.google.com/maps/embed/v1/place?key={google_api}&q={dropdown1[1:-1]},NSW"
+
+@app.callback(
+    Output("demogrphic-heading", "children"), 
+    Input('dropdown1', 'value'), 
+    prevent_initial_call=True
+)
+
+def update_demographic_title(dropdown1):
+    return f'Demographic Information for {dropdown1[1:-1]} (2021 Census)'
 
 @app.callback(
     Output("graph_price", "figure"), 
@@ -233,12 +270,14 @@ def price_plot(dropdown1, dropdown2, dropdown3):
                              y=df['medianSoldPrice'], 
                              mode='lines+markers', 
                              name="Median Sold Price",
+                             hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(37,202,160)')),
     
     fig.add_trace(go.Scatter(x=df.index[:], 
                              y=df['medianSaleListingPrice'],
                              mode='lines+markers',
                              name="Median Listing Price",
+                             hovertemplate = '%{x}<br>'+'$%{y}',
                              line=dict(color='rgb(37,202,160)',
                                        dash='dot'))),
     
@@ -246,20 +285,26 @@ def price_plot(dropdown1, dropdown2, dropdown3):
                              y=df['75thPercentileSoldPrice'],
                              mode='lines+markers',
                              name="75th Percentile Price",
+                             hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(279,179,71)')),
+    
     fig.add_trace(go.Scatter(x=df.index[:], 
                              y=df['95thPercentileSoldPrice'],
                              mode='lines+markers',
                              name="95th Percentile Price",
+                             hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(249,91,58)')),
     
-
-    
     fig.update_layout(
+        hoverlabel=dict(
+            font_family="Candara",
+            font_size=16),
+        margin=dict(t=70),
         autosize=True,
-        height=500,
-        title='Prices',
+        height=400,
+        title=f'{dropdown2} Bedroom {prop_type} Price Trend in {locality[1:-1]} ',
         title_x=0.4,
+        title_y=0.9,
         titlefont = dict(size=22),
         yaxis_title='Price ($)',
         plot_bgcolor='rgba(51,61,71,0)',
@@ -269,11 +314,11 @@ def price_plot(dropdown1, dropdown2, dropdown3):
         yaxis = dict(
             tickfont = dict(size=16),
             titlefont = dict(size=18),
-            linecolor='rgba(51,61,71,0.4)',
+            linecolor='rgba(51,61,71,0.6)',
             gridcolor='rgba(51,61,71,0.1)',
             showline=True,
             mirror=True,
-            linewidth=2,
+            linewidth=1,
             gridwidth = 1
             ),
         xaxis = dict(
@@ -283,11 +328,11 @@ def price_plot(dropdown1, dropdown2, dropdown3):
                         '2020 [Q1]','2020 [Q2]', '2020 [Q3]','2020 [Q4]',
                         '2021 [Q1]','2021 [Q2]', '2021 [Q3]','2021 [Q4]',
                         '2022 [Q1]','2022 [Q2]', '2022 [Q3]','2022 [Q4]'],
-            linecolor='rgba(51,61,71,0.4)',
+            linecolor='rgba(51,61,71,0.6)',
             gridcolor='rgba(51,61,71,0.1)',
             showline=True,
             mirror=True,
-            linewidth=2,
+            linewidth=1,
             gridwidth = 1,
             range=[0, 15]
             ),
@@ -320,20 +365,27 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
                              y=df['medianRentListingPrice'], 
                              mode='lines+markers', 
                              name="Median Rent",
-                             line_color = 'rgb(37,202,160)')),
+                             hovertemplate = '%{x}<br>'+'$%{y}',
+                             line_color = 'rgb(37,202,160)'))
+                            
     
     fig.add_trace(go.Scatter(x=df.index[:], 
                              y=df['highestRentListingPrice'],
                              mode='lines+markers',
                              name="Highest Rent",
+                             hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(249,91,58)')),
-    
-    
+
     fig.update_layout(
-        autosize = True,
-        height = 500,
-        title ='Rents',
-        title_x = 0.42,
+        hoverlabel=dict(
+            font_family="Candara",
+            font_size=16),
+        margin=dict(t=70),
+        autosize=True,
+        height=400,
+        title=f'{dropdown2} Bedroom {prop_type} Rental Trend in {locality[1:-1]}',
+        title_x=0.435,
+        title_y=0.9,
         titlefont = dict(size=22),
         yaxis_title ='Weekly Rent ($)',
         plot_bgcolor ='rgba(51,61,71,0)',
@@ -343,19 +395,19 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
         yaxis = dict(
             tickfont = dict(size=16),
             titlefont = dict(size=18),
-            linecolor ='rgba(51,61,71,0.4)',
+            linecolor ='rgba(51,61,71,0.6)',
             gridcolor ='rgba(51,61,71,0.1)',
             showline = True,
             mirror=True,
-            linewidth=2,
+            linewidth=1,
             gridwidth = 1
             ),
         xaxis = dict(
-            linecolor ='rgba(51,61,71,0.4)',
+            linecolor ='rgba(51,61,71,0.6)',
             gridcolor ='rgba(51,61,71,0.1)',
             showline = True,
             mirror=True,
-            linewidth=2,
+            linewidth=1,
             gridwidth = 1,
             range=[0, 15],
             tickfont = dict(size=16),
@@ -420,7 +472,7 @@ def demo_plot1(dropdown1,dropdown4):
     fig = go.Figure()
     fig.add_trace(go.Pie(labels=labels, 
                          values=values,
-                         text = [f'({i} %)' for i in (np.round((values/sum(values))*100))],
+                         text = [f'({i} %)' for i in (np.around((values/sum(values))*100,decimals=1))],
                          textinfo='label+text', 
                          textposition='outside',
                          name = name,
@@ -430,16 +482,20 @@ def demo_plot1(dropdown1,dropdown4):
                                      line=dict(color='#ffffff', width=3)),
                          sort=False,
                          showlegend=False,
-                         hoverinfo="label+percent+name"
+                         hoverinfo="label+text",
+                         insidetextorientation='horizontal'
                          )),
     
     fig.update_layout(
         autosize = False,
+        hoverlabel=dict(
+            font_family="Candara",
+            font_size=16),
         width = 650,
         height=650,
-        margin = {"r":150,"l":150,"t":150, "b":150},
+        margin = {"r":150,"l":150,"t":50, "b":200},
         font_family = "Candara",
-        uniformtext_minsize=16, 
+        uniformtext_minsize=26, 
         uniformtext_mode='hide',
         annotations=[dict(text=name, 
                           x=0.5, 
@@ -448,7 +504,6 @@ def demo_plot1(dropdown1,dropdown4):
                           showarrow=False,
                           font_family ="Candara")]
         )
-    
     
     return fig
 
@@ -470,7 +525,6 @@ def demo_plot2(dropdown1,dropdown5):
                                                  True).sort_values(by=0, 
                                                                    ascending=False, 
                                                                    axis=1)
-    
     if len(df.columns)>9:
         new_df = df.iloc[:,:9]
         others = list(df.sum(axis=1) - new_df.sum(axis=1))[0]
@@ -504,7 +558,7 @@ def demo_plot2(dropdown1,dropdown5):
     fig = go.Figure()
     fig.add_trace(go.Pie(labels=labels, 
                          values=values,
-                         text = [f'({i} %)' for i in (np.round((values/sum(values))*100))],
+                         text = [f'({i} %)' for i in (np.around((values/sum(values))*100,decimals=1))],
                          textinfo='label + text', 
                          textposition='outside',
                          textfont=dict(size=16),
@@ -514,14 +568,17 @@ def demo_plot2(dropdown1,dropdown5):
                                      line=dict(color='#ffffff', width=3)),
                          sort=False,
                          showlegend=False,
-                         hoverinfo="label+percent+name"
+                         hoverinfo="label+text"
                          )),
     
     fig.update_layout(
         autosize = False,
+        hoverlabel=dict(
+            font_family="Candara",
+            font_size=16),
         width = 650,
         height=650,
-        margin = {"r":150,"l":150,"t":150, "b":150},
+        margin = {"r":150,"l":150,"t":50, "b":200},
         font_family = "Candara",
         uniformtext_minsize=12, uniformtext_mode='hide',
         annotations=[dict(text=name, 
@@ -535,4 +592,3 @@ def demo_plot2(dropdown1,dropdown5):
     return fig
 
 app.run_server(debug=True)
-
