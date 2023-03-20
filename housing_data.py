@@ -4,7 +4,7 @@ Created on Thu Oct 27 16:37:32 2022
 
 @author: Prateek
 
-Functions to fetch propert data from Domain and save it as sql database
+Functions to fetch property data from Domain and save it as sql database
 """
 
 import requests
