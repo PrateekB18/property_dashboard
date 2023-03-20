@@ -6,9 +6,9 @@ Created on Thu Oct 27 16:37:32 2022
 
 Dashboard to view Greater Sydney property market stats
 """
+
 import sqlite3
 import numpy as np
-import math
 import pandas as pd
 import dash
 import dash_core_components as dcc
@@ -17,10 +17,10 @@ from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 
-google_api = "Add Google Map Embed API here"
+google_api = "AIzaSyCx_nDxyWAZDlEblMtTs_czmmpPXC3-lFk"
 
 con = sqlite3.connect('Suburb_names.db')
-suburbs = pd.read_sql('SELECT * FROM SubNames' , con)
+suburbs = pd.read_sql('SELECT * FROM [SubNames]' , con)
 sydney_subs = suburbs[suburbs['SA4 Name'].str.contains('Sydney - ')].reset_index(drop=True)
 
 suburb_dict = dict(zip( sydney_subs['Locality']+ ' [' +sydney_subs['Postcode'].astype(str)+']' , '['+sydney_subs['Locality']+']'))
@@ -35,11 +35,11 @@ bed_dict = dict(zip(bedrooms['Label'], bedrooms['Value']))
 
 type_dict = {"Apartment": "Unit", "House": "House"}
 
-demo_dict = {'Modes of Transport to Work':'Transport','Occupation':'Occupation',
-             'Weekly Rent ($)':'Rent','Religion':'Religion',
-             'Weekly Household Income ($)':'Income',
+demo_dict = {'Weekly Rent ($)':'Rent', 'Weekly Household Income ($)':'Income',
+             'Education':'Education','Occupation':'Occupation',
+             'Modes of Transport to Work':'Transport',
              'Age':'Age','Marital Status':'MaritalStatus',
-             'Country of Birth':'CountryOfBirth','Education':'Education',
+             'Country of Birth':'CountryOfBirth', 'Religion':'Religion',
              'Type of Occupancy':'Occupancy'}
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -71,7 +71,7 @@ app.layout = html.Div([
                              style={'font-family':"Candara",
                                     'font-size': '18px',
                                     "text-align": "center",
-                                    "marginLeft":'100px',
+                                    "marginLeft":'20px',
                                     "margin-top":"0px"})])]),
     
     dbc.Row([
@@ -84,11 +84,11 @@ app.layout = html.Div([
                 options=[{'label':label, 'value': value} for label, value in suburb_dict.items()], 
                 value = '[Alexandria]',
                 placeholder="Select Suburb",
-                
+                multi=False,
                 style=dict(
                     verticalAlign="middle",
-                    marginLeft ='50px',
-                    width='70%',
+                    marginLeft ='10px',
+                    width='98%',
                     )),
                 ]),
     
@@ -97,7 +97,7 @@ app.layout = html.Div([
                                      style={'font-family':"Candara",
                                             'font-size': '18px', 
                                             "text-align": "center",
-                                            "marginLeft":'100px',
+                                            "marginLeft":'20px',
                                             "margin-top":"30px"})])]),
     
             dbc.Row([
@@ -106,10 +106,11 @@ app.layout = html.Div([
                         options=[{'label':label, 'value': value} for label, value in bed_dict.items()], 
                         value = '2',
                         placeholder="Select Bedrooms",
+                        multi=False,
                         style=dict(
                             verticalAlign="middle",
-                            marginLeft ='50px',
-                            width='70%'
+                            marginLeft ='10px',
+                            width='98%'
                             )),
                         ])]),
             
@@ -118,7 +119,7 @@ app.layout = html.Div([
                                      style={'font-family':"Candara",
                                             'font-size': '18px', 
                                             "text-align": "center",
-                                            "marginLeft":'100px',
+                                            "marginLeft":'20px',
                                             "margin-top":"30px"})])]),
         
             dbc.Row([
@@ -127,22 +128,26 @@ app.layout = html.Div([
                         options=[{'label':label, 'value': value}for label, value in type_dict.items()], 
                         value = 'Unit',
                         placeholder="Select Property Type",
+                        multi=False,
                         style=dict(
                             verticalAlign="middle",
-                            marginLeft ='50px',
-                            width='70%'
+                            marginLeft ='10px',
+                            width='98%'
                             ))
                         ])]),
+            
             ]),
         
         dbc.Col([
             html.Div([
                 html.Iframe(id="google-map", 
-                            width='90%',
-                            height='225px',
+                            width='95%',
+                            height='220px',
                             src=f"https://www.google.com/maps/embed/v1/place?key={google_api}&q=Alexandria,NSW"
                             )
             ]),]),
+
+
     ]),
 
         dbc.Row([
@@ -163,7 +168,8 @@ app.layout = html.Div([
                              "margin-top":"10px"})
                 ]),
             ]),
-
+        
+        
         dbc.Row([dbc.Col(html.H2('Demographic Information for Alexandria (2021 Census)',
                                  id="demogrphic-heading",
                                  style = {'font-family':"Candara",
@@ -171,17 +177,18 @@ app.layout = html.Div([
                                           "text-align": "center",
                                           "margin-bottom":"10px",
                                           "margin-top":"30px"}))]),
-
+        
+        
         dbc.Row([
             dbc.Col([
                 dcc.Dropdown(
                         id='dropdown4',
-                        options=[{'label':label, 'value': value} for label, value in demo_dict.items()], 
+                        options=[{'label':label, 'value': value} for label, value in demo_dict.items()][:5], 
                         value = 'Rent',
                         placeholder="Select Demographic Information",
                         style=dict(
                             verticalAlign="middle",
-                            marginLeft ='12%',
+                            marginLeft ='10%',
                             width='70%'
                             ))
                 ]),
@@ -189,12 +196,12 @@ app.layout = html.Div([
             dbc.Col([
                 dcc.Dropdown(
                         id='dropdown5',
-                        options=[{'label':label, 'value': value} for label, value in demo_dict.items()], 
-                        value = 'Income',
+                        options=[{'label':label, 'value': value} for label, value in demo_dict.items()][5:], 
+                        value = 'Age',
                         placeholder="Select Demographic Information",
                         style=dict(
                             verticalAlign="middle",
-                            marginLeft ='15%',
+                            marginLeft ='12%',
                             width='70%'
                             ))
                 ]),
@@ -224,7 +231,8 @@ app.layout = html.Div([
                                         "background": "rgb(37,202,160)",
                                         "margin-left":"20%",
                                         'width':'60%',
-                                        "margin-top":"5px"}))]),     
+                                        "margin-top":"5px"}))]),
+        
 ])
 
 @app.callback(
@@ -245,6 +253,7 @@ def update_google_map(dropdown1):
 def update_demographic_title(dropdown1):
     return f'Demographic Information for {dropdown1[1:-1]} (2021 Census)'
 
+
 @app.callback(
     Output("graph_price", "figure"), 
     [Input('dropdown1', 'value'),
@@ -258,9 +267,9 @@ def price_plot(dropdown1, dropdown2, dropdown3):
     prop_type = dropdown3
     
     if prop_type == 'Unit':
-        conn = sqlite3.connect('Unit_Data.db')
+        conn = sqlite3.connect('Unit_data.db')
     else:
-        conn = sqlite3.connect('House_Data.db')
+        conn = sqlite3.connect('House_data.db')
     
     query = f'SELECT * FROM {locality}  WHERE bedrooms IS {bedrooms}'    
     df = pd.read_sql(query , conn)
@@ -294,6 +303,8 @@ def price_plot(dropdown1, dropdown2, dropdown3):
                              name="95th Percentile Price",
                              hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(249,91,58)')),
+    
+
     
     fig.update_layout(
         hoverlabel=dict(
@@ -353,9 +364,9 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
     prop_type = dropdown3
     
     if prop_type == 'Unit':
-        conn = sqlite3.connect('Unit_Data.db')
+        conn = sqlite3.connect('Unit_data.db')
     else:
-        conn = sqlite3.connect('House_Data.db')
+        conn = sqlite3.connect('House_data.db')
     
     query = f'SELECT * FROM {locality}  WHERE bedrooms IS {bedrooms}'
     df = pd.read_sql(query , conn)
@@ -375,7 +386,8 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
                              name="Highest Rent",
                              hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(249,91,58)')),
-
+    
+    
     fig.update_layout(
         hoverlabel=dict(
             font_family="Candara",
@@ -439,35 +451,38 @@ def demo_plot1(dropdown1,dropdown4):
                                                  True).sort_values(by=0, 
                                                                    ascending=False, 
                                                                    axis=1)
-    if len(df.columns)>9:
-        new_df = df.iloc[:,:9]
+        
+    if len(df.columns)>5:
+        new_df = df.iloc[:,:5]
         others = list(df.sum(axis=1) - new_df.sum(axis=1))[0]
-        new_df.insert(loc=9, column='Others', value=others)
+        new_df.insert(loc=5, column='Other', value=others)
         labels = (list(new_df.columns))
         values = (list(new_df.values[0]))
     else:
         labels = (list(df.columns))
         values = (list(df.values[0]))
+        
+    if demo == "Occupation":
+        labels = ['Professionals','Labourers','Technicians<br>&<br>Trade Workers',
+         'Clerical &<br>Administrative<br>Workers','Community &<br>Personal Service<br>Workers',
+         'Sales<br>Workers', 'Managers',
+         'Machinery<br>Operators<br>& Drivers',
+         'Inadequately Described']
     
-    colors = ['#20a9ca','#1eb2be','#1dbbb2','#1bc3a5','#67be88','#b3b86a',
-              '#ffb24c','#ff9944','#ff803c','#ff6633']
+    colors = ['#20a9ca','#1EB6B8','#1bc3a5',
+              '#ffb24c','#FF8C40','#ff6633']
     
-    if demo == 'CountryOfBirth':
-        name = 'Country<br>of<br>Birth'
-    elif demo == 'MaritalStatus':
-        name = 'Marital<br>Status'
-    elif demo == 'Income':
+    if demo == 'Income':
         name = 'Weekly<br>Household<br>Income ($)'
     elif demo == 'Rent':
         name = 'Weekly<br>Rent ($)'
     elif demo == 'Transport':
         name = 'Mode of<br>Transport<br>to Work'
-    elif demo == 'Occupancy':
-        name = 'Type<br>of<br>Occupancy'
     else:
         name = f'{demo}'
     
-    colors_divider = math.floor(len(colors)/(len(labels)))
+    # colors_divider = math.floor(len(colors)/(len(labels)))
+    # colors=colors[0::colors_divider]
     
     fig = go.Figure()
     fig.add_trace(go.Pie(labels=labels, 
@@ -476,9 +491,9 @@ def demo_plot1(dropdown1,dropdown4):
                          textinfo='label+text', 
                          textposition='outside',
                          name = name,
-                         textfont=dict(size=16),
+                         textfont=dict(size=14),
                          hole = 0.4,
-                         marker=dict(colors=colors[0::colors_divider],
+                         marker=dict(colors=colors,
                                      line=dict(color='#ffffff', width=3)),
                          sort=False,
                          showlegend=False,
@@ -491,9 +506,9 @@ def demo_plot1(dropdown1,dropdown4):
         hoverlabel=dict(
             font_family="Candara",
             font_size=16),
-        width = 650,
-        height=650,
-        margin = {"r":150,"l":150,"t":50, "b":200},
+        width = 600,
+        height=600,
+        margin = {"r":150,"l":150,"t":100, "b":200},
         font_family = "Candara",
         uniformtext_minsize=26, 
         uniformtext_mode='hide',
@@ -504,6 +519,7 @@ def demo_plot1(dropdown1,dropdown4):
                           showarrow=False,
                           font_family ="Candara")]
         )
+    
     
     return fig
 
@@ -525,31 +541,43 @@ def demo_plot2(dropdown1,dropdown5):
                                                  True).sort_values(by=0, 
                                                                    ascending=False, 
                                                                    axis=1)
-    if len(df.columns)>9:
-        new_df = df.iloc[:,:9]
+    if demo == "CountryOfBirth":
+        country_df = (df[['Australia', 'Nepal', 'China','Northern Macedonia', 'Bangladesh',
+           'Philippines', 'India', 'Brazil', 'Lebanon', 'Indonesia', 'Vietnam',
+           'Thailand', 'New Zealand', 'Greece', 'England', 'Hong Kong', 'Italy',
+           'Egypt', 'Fiji', 'Malaysia', 'Japan', 'Pakistan', 'Poland', 'Chile',
+           'Croatia', 'Bosnia & Herzegovina', 'USA', 'Ireland', 'South Korea',
+           'Turkey', 'South_Africa', 'Taiwan', 'Germany', 'Iraq', 'France',
+           'Sri Lanka', 'Iran', 'Scotland', 'Canada', 'Malta', 'Singapore',
+           'Cambodia', 'Netherlands', 'Myanmar', 'Samoa', 'Papua New Guinea',
+           'Mauritius', 'Afghanistan', 'Zimbabwe', 'Wales']]).sort_values(by=0,ascending=False, axis=1)
+        new_df = country_df.iloc[:,:5]
         others = list(df.sum(axis=1) - new_df.sum(axis=1))[0]
-        new_df.insert(loc=9, column='Others', value=others)
+        new_df.insert(loc=5, column='Born Elsewhere', value=others)
+        labels = (list(new_df.columns))
+        values = (list(new_df.values[0]))
+        
+    elif len(df.columns)>5:
+        new_df = df.iloc[:,:5]
+        others = list(df.sum(axis=1) - new_df.sum(axis=1))[0]
+        new_df.insert(loc=5, column='Other', value=others)
         labels = (list(new_df.columns))
         values = (list(new_df.values[0]))
     else:
         labels = (list(df.columns))
         values = (list(df.values[0]))
     
-    colors = ['#20a9ca','#1eb2be','#1dbbb2','#1bc3a5','#67be88','#b3b86a',
-              '#ffb24c','#ff9944','#ff803c','#ff6633']
+    # colors = ['#20a9ca','#1eb2be','#1dbbb2','#1bc3a5','#67be88','#b3b86a',
+    #           '#ffb24c','#ff9944','#ff803c','#ff6633', '#ff6633']
+    colors = ['#20a9ca','#1EB6B8','#1bc3a5',
+              '#ffb24c','#FF8C40','#ff6633']
     
-    colors_divider = math.floor(len(colors)/(len(labels)))
+    # colors_divider = math.floor(len(colors)/(len(labels)))
     
     if demo == 'CountryOfBirth':
         name = 'Country<br>of<br>Birth'
     elif demo == 'MaritalStatus':
         name = 'Marital<br>Status'
-    elif demo == 'Income':
-        name = 'Weekly<br>Household<br>Income ($)'
-    elif demo == 'Rent':
-        name = 'Weekly<br>Rent ($)'
-    elif demo == 'Transport':
-        name = 'Mode of<br>Transport<br>to Work'
     elif demo == 'Occupancy':
         name = 'Type<br>of<br>Occupancy'
     else:
@@ -561,10 +589,10 @@ def demo_plot2(dropdown1,dropdown5):
                          text = [f'({i} %)' for i in (np.around((values/sum(values))*100,decimals=1))],
                          textinfo='label + text', 
                          textposition='outside',
-                         textfont=dict(size=16),
+                         textfont=dict(size=14),
                          name = name,
                          hole = 0.4,
-                         marker=dict(colors=colors[0::colors_divider],
+                         marker=dict(colors=colors,
                                      line=dict(color='#ffffff', width=3)),
                          sort=False,
                          showlegend=False,
@@ -576,9 +604,9 @@ def demo_plot2(dropdown1,dropdown5):
         hoverlabel=dict(
             font_family="Candara",
             font_size=16),
-        width = 650,
-        height=650,
-        margin = {"r":150,"l":150,"t":50, "b":200},
+        width = 600,
+        height=600,
+        margin = {"r":150,"l":150,"t":100, "b":200},
         font_family = "Candara",
         uniformtext_minsize=12, uniformtext_mode='hide',
         annotations=[dict(text=name, 
