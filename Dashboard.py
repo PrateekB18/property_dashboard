@@ -36,7 +36,7 @@ bed_dict = dict(zip(bedrooms['Label'], bedrooms['Value']))
 
 type_dict = {"Apartment": "Unit", "House": "House"}
 
-demo_dict = {'Weekly Rent ($)':'Rent', 'Weekly Household Income':'Income',
+demo_dict = {'Weekly Rent':'Rent', 'Weekly Household Income':'Income',
              'Education':'Education','Occupation':'Occupation',
              'Modes of Transport to Work':'Transport',
              'Age':'Age','Marital Status':'MaritalStatus',
@@ -157,14 +157,15 @@ app.layout = html.Div([
                     dcc.Graph(id="graph_price")],
                     style = {'float':'left', 
                              'width':'95%',
-                             "margin-top":"10px"})
+                             "margin-top":"10px",
+                             "margin-left":"2.5%"})
                 ]),
         
             dbc.Col([
                 html.Div([
                     dcc.Graph(id="graph_rent")],
                     style = {'float':'right',
-                             "margin-right":"15px",
+                             "margin-right":"2.5%",
                              'width':'90%',
                              "margin-top":"10px"})
                 ]),
@@ -271,16 +272,16 @@ def price_plot(dropdown1, dropdown2, dropdown3):
     
     query = f'SELECT * FROM {locality}  WHERE bedrooms IS {bedrooms}'    
     df = pd.read_sql(query , conn)
-    
+    ticks = list(df['year'].astype(str)+' (Q'+df['quater'].astype(int).astype(str)+')')
     fig = fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df.index[:], 
+    fig.add_trace(go.Scatter(x=ticks, 
                              y=df['medianSoldPrice'], 
                              mode='lines+markers', 
                              name="Median Sold Price",
                              hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(37,202,160)')),
     
-    fig.add_trace(go.Scatter(x=df.index[:], 
+    fig.add_trace(go.Scatter(x=ticks, 
                              y=df['medianSaleListingPrice'],
                              mode='lines+markers',
                              name="Median Listing Price",
@@ -288,14 +289,14 @@ def price_plot(dropdown1, dropdown2, dropdown3):
                              line=dict(color='rgb(37,202,160)',
                                        dash='dot'))),
     
-    fig.add_trace(go.Scatter(x=df.index[:], 
+    fig.add_trace(go.Scatter(x=ticks, 
                              y=df['75thPercentileSoldPrice'],
                              mode='lines+markers',
                              name="75th Percentile Price",
                              hovertemplate = '%{x}<br>'+'$%{y}',
                              line_color = 'rgb(279,179,71)')),
     
-    fig.add_trace(go.Scatter(x=df.index[:], 
+    fig.add_trace(go.Scatter(x=ticks, 
                              y=df['95thPercentileSoldPrice'],
                              mode='lines+markers',
                              name="95th Percentile Price",
@@ -332,11 +333,6 @@ def price_plot(dropdown1, dropdown2, dropdown3):
             ),
         xaxis = dict(
             tickfont = dict(size=16),
-            tickvals = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-            ticktext = ['2019 [Q1]','2019 [Q2]','2019 [Q3]','2019 [Q4]',
-                        '2020 [Q1]','2020 [Q2]', '2020 [Q3]','2020 [Q4]',
-                        '2021 [Q1]','2021 [Q2]', '2021 [Q3]','2021 [Q4]',
-                        '2022 [Q1]','2022 [Q2]', '2022 [Q3]','2022 [Q4]'],
             linecolor='rgba(51,61,71,0.6)',
             gridcolor='rgba(51,61,71,0.1)',
             showline=True,
@@ -368,9 +364,9 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
     
     query = f'SELECT * FROM {locality}  WHERE bedrooms IS {bedrooms}'
     df = pd.read_sql(query , conn)
-    
+    ticks = list(df['year'].astype(str)+' (Q'+df['quater'].astype(int).astype(str)+')')
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df.index[:], 
+    fig.add_trace(go.Scatter(x=ticks, 
                              y=df['medianRentListingPrice'], 
                              mode='lines+markers', 
                              name="Median Rent",
@@ -378,7 +374,7 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
                              line_color = 'rgb(37,202,160)'))
                             
     
-    fig.add_trace(go.Scatter(x=df.index[:], 
+    fig.add_trace(go.Scatter(x=ticks, 
                              y=df['highestRentListingPrice'],
                              mode='lines+markers',
                              name="Highest Rent",
@@ -420,12 +416,7 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
             linewidth=1,
             gridwidth = 1,
             range=[0, 15],
-            tickfont = dict(size=16),
-            tickvals = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-            ticktext = ['2019 [Q1]','2019 [Q2]', '2019 [Q3]','2019 [Q4]',
-                        '2020 [Q1]','2020 [Q2]', '2020 [Q3]','2020 [Q4]',
-                        '2021 [Q1]','2021 [Q2]', '2021 [Q3]','2021 [Q4]',
-                        '2022 [Q1]','2022 [Q2]', '2022 [Q3]','2022 [Q4]']
+            tickfont = dict(size=16)
             ),
         )
     
@@ -628,4 +619,3 @@ def demo_plot2(dropdown1,dropdown5):
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
