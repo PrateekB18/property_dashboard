@@ -17,7 +17,7 @@ from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 
-google_api = ""
+google_api = "Add Google Map Embed API here"
 
 
 con = sqlite3.connect('Suburb_names.db')
