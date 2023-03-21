@@ -11,13 +11,14 @@ import sqlite3
 import numpy as np
 import pandas as pd
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 
-google_api = "Google Map Embed API key"
+google_api = ""
+
 
 con = sqlite3.connect('Suburb_names.db')
 suburbs = pd.read_sql('SELECT * FROM [SubNames]' , con)
@@ -35,7 +36,7 @@ bed_dict = dict(zip(bedrooms['Label'], bedrooms['Value']))
 
 type_dict = {"Apartment": "Unit", "House": "House"}
 
-demo_dict = {'Weekly Rent':'Rent', 'Weekly Household Income':'Income',
+demo_dict = {'Weekly Rent ($)':'Rent', 'Weekly Household Income':'Income',
              'Education':'Education','Occupation':'Occupation',
              'Modes of Transport to Work':'Transport',
              'Age':'Age','Marital Status':'MaritalStatus',
@@ -188,7 +189,7 @@ app.layout = html.Div([
                         placeholder="Select Demographic Information",
                         style=dict(
                             verticalAlign="middle",
-                            marginLeft ='10%',
+                            marginLeft ='15%',
                             width='70%'
                             ))
                 ]),
@@ -201,7 +202,7 @@ app.layout = html.Div([
                         placeholder="Select Demographic Information",
                         style=dict(
                             verticalAlign="middle",
-                            marginLeft ='12%',
+                            marginLeft ='15%',
                             width='70%'
                             ))
                 ]),
@@ -212,17 +213,14 @@ app.layout = html.Div([
                 html.Div([
                     dcc.Graph(id="graph_demo1")],
                     style = {'float':'left', 
-                             'width':'95%',
-                             "margin-bottom":"0px"})
+                             'width':'95%'})
                 ]),
         
             dbc.Col([
                 html.Div([
                     dcc.Graph(id="graph_demo2")],
                     style = {'float':'right', 
-                             'width':'95%',
-                             "margin-bottom":"0px",
-                             "margin-left":"50px"})
+                             'width':'95%'})
                 ]),
             ]),
         
@@ -451,6 +449,11 @@ def demo_plot1(dropdown1,dropdown4):
                                                  True).sort_values(by=0, 
                                                                    ascending=False, 
                                                                    axis=1)
+    if demo == "Occupation":
+        df.columns = ['Professionals','Labourers','Technicians & Trade Workers',
+         'Clerical & Administrative<br>Workers','Community & Personal<br>Service Workers',
+         'Sales Workers', 'Managers', 'Machinery Operators<br>& Drivers',
+         'Inadequately Described']
         
     if len(df.columns)>5:
         new_df = df.iloc[:,:5]
@@ -462,12 +465,7 @@ def demo_plot1(dropdown1,dropdown4):
         labels = (list(df.columns))
         values = (list(df.values[0]))
         
-    if demo == "Occupation":
-        labels = ['Professionals','Labourers','Technicians<br>&<br>Trade Workers',
-         'Clerical &<br>Administrative<br>Workers','Community &<br>Personal Service<br>Workers',
-         'Sales<br>Workers', 'Managers',
-         'Machinery<br>Operators<br>& Drivers',
-         'Inadequately Described']
+    
     if demo == "Rent":
         labels = ['$450 to $549', '$350 to $449','$550 to $649','$275 to $349',
          '$650 to $749','Other']
@@ -487,14 +485,11 @@ def demo_plot1(dropdown1,dropdown4):
     else:
         name = f'{demo}'
     
-    # colors_divider = math.floor(len(colors)/(len(labels)))
-    # colors=colors[0::colors_divider]
-    
     fig = go.Figure()
     fig.add_trace(go.Pie(labels=labels, 
                          values=values,
                          text = [f'({i} %)' for i in (np.around((values/sum(values))*100,decimals=1))],
-                         textinfo='label+text', 
+                         textinfo='none', 
                          textposition='outside',
                          name = name,
                          textfont=dict(size=14),
@@ -502,22 +497,25 @@ def demo_plot1(dropdown1,dropdown4):
                          marker=dict(colors=colors,
                                      line=dict(color='#ffffff', width=3)),
                          sort=False,
-                         showlegend=False,
+                         showlegend=True,
                          hoverinfo="label+text",
                          insidetextorientation='horizontal'
                          )),
     
     fig.update_layout(
-        autosize = False,
+        legend=dict(
+            font = dict(size=14),
+            orientation="h",
+            yanchor="top",
+            y=0,
+            xanchor="center",
+            x=0.5),
+        autosize = True,
         hoverlabel=dict(
             font_family="Candara",
             font_size=16),
-        width = 600,
-        height=600,
-        margin = {"r":150,"l":150,"t":100, "b":200},
+        margin = {"r":50,"l":50,"t":30, "b":150},
         font_family = "Candara",
-        uniformtext_minsize=26, 
-        uniformtext_mode='hide',
         annotations=[dict(text=name, 
                           x=0.5, 
                           y=0.5, 
@@ -573,13 +571,9 @@ def demo_plot2(dropdown1,dropdown5):
         labels = (list(df.columns))
         values = (list(df.values[0]))
     
-    # colors = ['#20a9ca','#1eb2be','#1dbbb2','#1bc3a5','#67be88','#b3b86a',
-    #           '#ffb24c','#ff9944','#ff803c','#ff6633', '#ff6633']
     colors = ['#20a9ca','#1EB6B8','#1bc3a5',
               '#ffb24c','#FF8C40','#ff6633']
-    
-    # colors_divider = math.floor(len(colors)/(len(labels)))
-    
+        
     if demo == 'CountryOfBirth':
         name = 'Country<br>of<br>Birth'
     elif demo == 'MaritalStatus':
@@ -593,39 +587,45 @@ def demo_plot2(dropdown1,dropdown5):
     fig.add_trace(go.Pie(labels=labels, 
                          values=values,
                          text = [f'({i} %)' for i in (np.around((values/sum(values))*100,decimals=1))],
-                         textinfo='label + text', 
-                         textposition='outside',
-                         textfont=dict(size=14),
+                         textinfo='none', 
+                         textposition='inside',
                          name = name,
+                         textfont=dict(size=14),
                          hole = 0.4,
                          marker=dict(colors=colors,
                                      line=dict(color='#ffffff', width=3)),
                          sort=False,
-                         showlegend=False,
-                         hoverinfo="label+text"
+                         showlegend=True,
+                         hoverinfo="label+text",
+                         insidetextorientation='horizontal'
                          )),
     
     fig.update_layout(
+        legend=dict(
+            font = dict(size=14),
+            orientation="h",
+            yanchor="top",
+            y=-0,
+            xanchor="center",
+            x=0.5),
         autosize = False,
         hoverlabel=dict(
             font_family="Candara",
             font_size=16),
-        width = 600,
-        height=600,
-        margin = {"r":150,"l":150,"t":100, "b":200},
+        margin = {"r":50,"l":50,"t":30, "b":150},
         font_family = "Candara",
-        uniformtext_minsize=12, uniformtext_mode='hide',
         annotations=[dict(text=name, 
                           x=0.5, 
                           y=0.5, 
                           font_size=18, 
                           showarrow=False,
                           font_family ="Candara")]
+        
         )
     
     return fig
 
 
-
-app.run_server(debug=True)
+if __name__ == '__main__':
+    app.run_server(debug=True)
 
