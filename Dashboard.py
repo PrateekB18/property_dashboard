@@ -19,7 +19,6 @@ import dash_bootstrap_components as dbc
 
 google_api = "Add Google Map Embed API here"
 
-
 con = sqlite3.connect('Suburb_names.db')
 suburbs = pd.read_sql('SELECT * FROM [SubNames]' , con)
 sydney_subs = suburbs[suburbs['SA4 Name'].str.contains('Sydney - ')].reset_index(drop=True)
@@ -327,6 +326,7 @@ def price_plot(dropdown1, dropdown2, dropdown3):
             linecolor='rgba(51,61,71,0.6)',
             gridcolor='rgba(51,61,71,0.1)',
             showline=True,
+            showgrid = False,
             mirror=True,
             linewidth=1,
             gridwidth = 1
@@ -336,6 +336,7 @@ def price_plot(dropdown1, dropdown2, dropdown3):
             linecolor='rgba(51,61,71,0.6)',
             gridcolor='rgba(51,61,71,0.1)',
             showline=True,
+            showgrid = False,
             mirror=True,
             linewidth=1,
             gridwidth = 1,
@@ -404,6 +405,7 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
             linecolor ='rgba(51,61,71,0.6)',
             gridcolor ='rgba(51,61,71,0.1)',
             showline = True,
+            showgrid = False,
             mirror=True,
             linewidth=1,
             gridwidth = 1
@@ -412,6 +414,7 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
             linecolor ='rgba(51,61,71,0.6)',
             gridcolor ='rgba(51,61,71,0.1)',
             showline = True,
+            showgrid = False,
             mirror=True,
             linewidth=1,
             gridwidth = 1,
