@@ -5,4 +5,4 @@ A user-friendly Dash application that allows users to view property data for sub
 <b>Note:</b> To use the area map feature, you'll need to obtain a Google Map Embed API key. 
 
 
-<img src="https://i.imgur.com/OD5qgzq.png" alt="Property Dashboard">
+<img src="https://i.imgur.com/523gL7S.png" alt="Property Dashboard">
