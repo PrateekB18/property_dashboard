@@ -272,7 +272,7 @@ def price_plot(dropdown1, dropdown2, dropdown3):
     
     query = f'SELECT * FROM {locality}  WHERE bedrooms IS {bedrooms}'    
     df = pd.read_sql(query , conn)
-    ticks = list(df['year'].astype(str)+' (Q'+df['quater'].astype(int).astype(str)+')')
+    ticks = df['year'].astype(str)+' (Q'+df['quater'].astype(int).astype(str)+')'
     fig = fig = go.Figure()
     fig.add_trace(go.Scatter(x=ticks, 
                              y=df['medianSoldPrice'], 
@@ -364,7 +364,7 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
     
     query = f'SELECT * FROM {locality}  WHERE bedrooms IS {bedrooms}'
     df = pd.read_sql(query , conn)
-    ticks = list(df['year'].astype(str)+' (Q'+df['quater'].astype(int).astype(str)+')')
+    ticks = df['year'].astype(str)+' (Q'+df['quater'].astype(int).astype(str)+')'
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=ticks, 
                              y=df['medianRentListingPrice'], 
