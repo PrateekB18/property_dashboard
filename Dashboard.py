@@ -19,12 +19,38 @@ import dash_bootstrap_components as dbc
 
 google_api = "Add Google Map Embed API here"
 
-con = sqlite3.connect('Suburb_names.db')
-suburbs = pd.read_sql('SELECT * FROM [SubNames]' , con)
-sydney_subs = suburbs[suburbs['SA4 Name'].str.contains('Sydney - ')].reset_index(drop=True)
+##### Fetching and Filtering Suburbs based on available Data ######
 
-suburb_dict = dict(zip( sydney_subs['Locality']+ ' [' +sydney_subs['Postcode'].astype(str)+']' , '['+sydney_subs['Locality']+']'))
+conn = sqlite3.connect('Suburb_names.db')
+suburbs = pd.read_sql('SELECT * FROM [SubNames]' , conn)
+conn = sqlite3.connect('Unit_data.db')
+cursor = conn.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+tables1 = cursor.fetchall()
+conn = sqlite3.connect('House_data.db')
+cursor = conn.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+tables2 = cursor.fetchall()
+all_tables = list( dict.fromkeys(tables1+tables2))
 
+names = []
+for table_name in all_tables:
+        names.append(table_name[0])
+
+key = []
+for i, row in suburbs.iterrows():
+    Sub = row['Locality']
+    if Sub in names:
+        key.append(1)
+    else:
+        key.append(0)
+    
+suburbs['Filter'] = key
+suburbs.drop(suburbs[suburbs['Filter'] ==0].index, inplace = True)
+
+###############
+
+suburb_dict = dict(zip( suburbs['Locality']+ ' [' +suburbs['Postcode'].astype(str)+']' , '['+suburbs['Locality']+']'))
 
 bedrooms = pd.DataFrame([['1 Bedroom', '1'],['2 Bedrooms', '2'],
                          ['3 Bedrooms', '3'],['4 Bedrooms', '4'],
