@@ -83,14 +83,14 @@ app.layout = html.Div([
 
     dbc.Row([dbc.Col(html.H2('Greater Sydney Property Market Dashboard',
                              style = {'font-family':"Candara",
-                                      'font-size': '28px',
-                                      "text-align": "center",
-                                      "margin-top":"0%",
-                                      "margin-bottom":"1.5%",
-                                      "color":"#FFFFFF",
-                                      "background-color": "#4F555A",
-                                      "height": "70%",
-                                      'box-shadow': '0.1px 0.1px 1px 1px #4F555A'}))]),
+                                           'font-size': '28px',
+                                           "text-align": "center",
+                                           "margin-top":"0%",
+                                           "margin-bottom":"1%",
+                                           "color":"#FFFFFF",
+                                           "background-color": "#4F555A",
+                                           "height": "90%",
+                                           'box-shadow': '#4F555A 0px 0px 5px 0px, #4F555A 0px 0px 1px 0px'}))]),
 
     dbc.Row([
             dbc.Col([
@@ -101,7 +101,7 @@ app.layout = html.Div([
                                                 'font-size': '18px',
                                                 "text-align": "center",
                                                 "marginLeft":'5%',
-                                                "margin-top":"1%"})])]),
+                                                "margin-top":"2.5%"})])]),
 
                 dbc.Row([
                     dcc.Dropdown(
@@ -162,12 +162,14 @@ app.layout = html.Div([
                                 ))
                             ])]),
                 ],
-                style={'width':'98%',
+                style={'width':'99%',
                        "marginLeft":'1.5%',
-                       "marginRight":'0.5%',
-                       'height':'250px',
+                       "marginTop":'1.5%',
+                       'height':'270px',
                        "background-color": "#FFFFFF",
-                       'box-shadow': '0.1px 0.1px 1px 1px #ff6633'},)
+                       "border-radius": "4px",
+                       "border-top-left-radius": "40px",
+                       'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'},)
                 ]),
 
             dbc.Col([
@@ -181,14 +183,16 @@ app.layout = html.Div([
 
                     style={'border-style': 'solid',
                            'border-width': '0px',
-                           'width':'98%',
-                           "marginLeft":'0.5%',
-                           "marginRight":'1.5%',
-                           'height':'250px',
+                           'width':'99%',
+                           "marginLeft":'-0.5%',
+                           "marginTop":'1.5%',
+                           'height':'270px',
                            'border-color': '#93979A',
-                           'border-radius': '0px',
+                           "border-radius": "4px",
+                           "border-top-right-radius": "40px",
+                           "overflow": "hidden",
                            "background-color": "#FFFFFF",
-                           'box-shadow': '0.1px 0.1px 1px 1px #ff6633'},
+                           'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'},
 
                 ),]),
             ]),
@@ -197,25 +201,33 @@ app.layout = html.Div([
 
                 dbc.Col([
                     html.Div([
-                        dcc.Graph(id="graph_price")],
-                        style = {'width':'98%',
+                        dcc.Graph(id="graph_price",
+                              style = {'width':'95%',
+                                        "marginLeft":'2.5%'})],
+                        style = {'width':'99%',
                                  "marginLeft":'1.5%',
                                  "marginTop":'2%',
-                                 "marginRight":'0.5%',
-                                 "background-color": "#FFFFFF",
-                                 'box-shadow': '0.1px 0.1px 1px 1px #ffb24c'})
+                                 'background-color':'#FFFFFF',
+                                 "overflow": "hidden",
+                                 "border-radius": "4px",
+                                 "border-bottom-left-radius": "40px",
+                                 'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'})
                     ]),
 
             dbc.Col([
                 html.Div([
-                    dcc.Graph(id="graph_rent")],
+                    dcc.Graph(id="graph_rent",
+                              style = {'width':'95%',
+                                        "marginLeft":'2.5%'})],
                     style = {
-                           'width':'98%',
+                           'width':'99%',
                            "marginTop":'2%',
-                           "marginLeft":'0.5%',
-                           "marginRight":'1.5%',
+                           "marginLeft":'-0.5%',
                            "background-color": "#FFFFFF",
-                           'box-shadow': '0.1px 0.1px 1px 1px #ffb24c'})
+                           "overflow": "hidden",
+                           "border-radius": "4px",
+                           "border-bottom-right-radius": "40px",
+                           'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'})
                 ]),
             ]),
 
@@ -271,7 +283,7 @@ app.layout = html.Div([
                     dcc.Graph(id="graph_demo2")],
                     style = {'float':'right',
                              'width':'95%',
-                            "marginRight":'2.5%'})
+                            "marginRight":'5%'})
                 ]),
             ]),
             ],
@@ -281,7 +293,9 @@ app.layout = html.Div([
                    "marginLeft":'0.75%',
                    "marginRight":'0.75%',
                    "background-color": "#FFFFFF",
-                   'box-shadow': '0.1px 0.1px 1px 1px #1bc3a5'}),
+                   "overflow": "hidden",
+                   "border-radius": "40px",
+                   'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'}),
 
         html.Div([
 
@@ -355,8 +369,11 @@ app.layout = html.Div([
                "marginTop":'1%',
                "marginLeft":'0.75%',
                "marginRight":'0.75%',
+               "marginBottom":'1%',
                "background-color": "#FFFFFF",
-               'box-shadow': '0.1px 0.1px 1px 1px #20A9CA'}),
+               "overflow": "hidden",
+               "border-radius": "40px",
+               'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'}),
 
         dbc.Row([dbc.Col(html.Hr(style={"height":"0px",
                                     "color":"#E9EAEA"}))]),
@@ -469,7 +486,7 @@ def price_plot(dropdown1, dropdown2, dropdown3):
             font_size=16),
         margin=dict(t=70),
         autosize=True,
-        height=400,
+        height=380,
         title=f'{dropdown2} Bedroom {prop_type} Price Trend in {locality[1:-1]} ',
         title_x=0.4,
         title_y=0.9,
@@ -550,7 +567,7 @@ def rent_plot(dropdown1, dropdown2, dropdown3):
             font_size=16),
         margin=dict(t=70),
         autosize=True,
-        height=400,
+        height=380,
         title=f'{dropdown2} Bedroom {prop_type} Rental Trend in {locality[1:-1]}',
         title_x=0.435,
         title_y=0.9,
@@ -671,7 +688,7 @@ def demo_plot1(dropdown1,dropdown4):
         hoverlabel=dict(
             font_family="Candara",
             font_size=16),
-        margin = {"r":50,"l":50,"t":30, "b":150},
+        margin = {"r":0,"l":0,"t":30, "b":120},
         font_family = "Candara",
         annotations=[dict(text=name,
                           x=0.5,
@@ -769,7 +786,7 @@ def demo_plot2(dropdown1,dropdown5):
         hoverlabel=dict(
             font_family="Candara",
             font_size=16),
-        margin = {"r":50,"l":50,"t":30, "b":150},
+        margin = {"r":0,"l":0,"t":30, "b":120},
         font_family = "Candara",
         annotations=[dict(text=name,
                           x=0.5,
