@@ -77,8 +77,10 @@ demo_dict = {'Weekly Rent':'Rent', 'Weekly Household Income':'Income',
              'Type of Occupancy':'Occupancy'}
 
 app = dash.Dash(__name__,
-                external_stylesheets=['custom.css', dbc.themes.BOOTSTRAP])
+                external_stylesheets=['/home/pb18/mysite/assets/custom.css', dbc.themes.BOOTSTRAP],
+                meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1'}])
 
+app.title = 'Greater Sydney Property Market Dashboard'
 app.layout = html.Div([
 
     dbc.Row([dbc.Col(html.H2('Greater Sydney Property Market Dashboard',
@@ -86,8 +88,8 @@ app.layout = html.Div([
                                            'font-size': '28px',
                                            "text-align": "center",
                                            "margin-top":"0%",
-                                           "margin-bottom":"1%",
-                                           "color":"#FFFFFF",
+                                           "margin-bottom":"0.75%",
+                                           "color":"#F5F5F5",
                                            "background-color": "#4F555A",
                                            "height": "90%",
                                            'box-shadow': '#4F555A 0px 0px 5px 0px, #4F555A 0px 0px 1px 0px'}))]),
@@ -169,7 +171,7 @@ app.layout = html.Div([
                        "background-color": "#FFFFFF",
                        "border-radius": "4px",
                        "border-top-left-radius": "40px",
-                       'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'},)
+                       'box-shadow': 'rgba(0, 0, 0, 0.4) 0px 0px 5px 0px, rgba(0, 0, 0, 0.4) 0px 0px 1px 0px'},)
                 ]),
 
             dbc.Col([
@@ -183,7 +185,7 @@ app.layout = html.Div([
 
                     style={'border-style': 'solid',
                            'border-width': '0px',
-                           'width':'99%',
+                           'width':'98.9%',
                            "marginLeft":'-0.5%',
                            "marginTop":'1.5%',
                            'height':'270px',
@@ -192,7 +194,7 @@ app.layout = html.Div([
                            "border-top-right-radius": "40px",
                            "overflow": "hidden",
                            "background-color": "#FFFFFF",
-                           'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'},
+                           'box-shadow': 'rgba(0, 0, 0, 0.5) 0px 0px 5px 0px, rgba(0, 0, 0, 0.5) 0px 0px 1px 0px'},
 
                 ),]),
             ]),
@@ -211,7 +213,7 @@ app.layout = html.Div([
                                  "overflow": "hidden",
                                  "border-radius": "4px",
                                  "border-bottom-left-radius": "40px",
-                                 'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'})
+                                 'box-shadow': 'rgba(0, 0, 0, 0.4) 0px 0px 5px 0px, rgba(0, 0, 0, 0.4) 0px 0px 1px 0px'})
                     ]),
 
             dbc.Col([
@@ -227,7 +229,7 @@ app.layout = html.Div([
                            "overflow": "hidden",
                            "border-radius": "4px",
                            "border-bottom-right-radius": "40px",
-                           'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'})
+                           'box-shadow': 'rgba(0, 0, 0, 0.4) 0px 0px 5px 0px, rgba(0, 0, 0, 0.4) 0px 0px 1px 0px'})
                 ]),
             ]),
 
@@ -295,7 +297,7 @@ app.layout = html.Div([
                    "background-color": "#FFFFFF",
                    "overflow": "hidden",
                    "border-radius": "40px",
-                   'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'}),
+                   'box-shadow': 'rgba(0, 0, 0, 0.4) 0px 0px 5px 0px, rgba(0, 0, 0, 0.4) 0px 0px 1px 0px'}),
 
         html.Div([
 
@@ -373,14 +375,14 @@ app.layout = html.Div([
                "background-color": "#FFFFFF",
                "overflow": "hidden",
                "border-radius": "40px",
-               'box-shadow': 'rgba(0, 0, 0, 0.2) 0px 0px 5px 0px, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px'}),
+               'box-shadow': 'rgba(0, 0, 0, 0.4) 0px 0px 5px 0px, rgba(0, 0, 0, 0.4) 0px 0px 1px 0px'}),
 
         dbc.Row([dbc.Col(html.Hr(style={"height":"0px",
                                     "color":"#E9EAEA"}))]),
 
 ],
     style = {
-           "background-color": "#F4F5F5"}
+           "background-color": "#F5F5F5"}
     )
 
 @app.callback(
