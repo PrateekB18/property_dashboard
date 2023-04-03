@@ -8,4 +8,4 @@ To use the dashboard, run <code>python3 Dashboard.py</code>
 
 Dashboard can also be accesed by clicking on this <b><a href="http://pb18.pythonanywhere.com/">link</a></b>.
 
-<img src="https://i.imgur.com/523gL7S.png" alt="Property Dashboard">
+<img src="https://i.imgur.com/poBRMXm.png" alt="Property Dashboard">
