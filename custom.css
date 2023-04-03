@@ -1,0 +1,35 @@
+.Select--multi .Select-value {
+  background-color: #F6FDFC;
+  border: 1px solid #1bc3a5;
+  color: #212529;
+}
+
+.Select--multi .Select-value-icon {
+    border-right: 1px solid #1bc3a5;
+    background-color: #FFF4F1;
+}
+
+
+.custom-tabs {
+    background-color: #ffffff;
+    padding: 10px 0px 10px;
+    font-family: Candara;
+    font-size: 24px;
+    height: 100px;
+ }
+
+.custom-tab{
+   background-color: #F3F5F7 !important;
+   border-top: #93979A solid 3px !important;
+   border-left: 0px !important;
+   border-right: 0px !important;
+   border-bottom: #93979A solid 1px !important;
+   color: #93979A !important;
+ }
+
+.custom-tab--selected {
+   background-color: #F6FDFC !important;
+   border-top: #1bc3a5 solid 3px !important;
+   border-bottom: #1bc3a5 solid 1px !important;
+   color: #1bc3a5 !important;
+ }
