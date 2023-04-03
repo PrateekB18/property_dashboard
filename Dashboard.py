@@ -77,7 +77,7 @@ demo_dict = {'Weekly Rent':'Rent', 'Weekly Household Income':'Income',
              'Type of Occupancy':'Occupancy'}
 
 app = dash.Dash(__name__,
-                external_stylesheets=['/assets/custom.css', dbc.themes.BOOTSTRAP])
+                external_stylesheets=['custom.css', dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
 
