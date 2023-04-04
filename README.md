@@ -6,6 +6,6 @@ To use the dashboard, run <code>python3 Dashboard.py</code>
 
 <b>Note:</b> To use the area map feature, you'll need to obtain a Google Map Embed API key. 
 
-Dashboard can also be accesed by clicking on this <b><a href="http://pb18.pythonanywhere.com/">link</a></b>.
+A custom themed version of this dashboard can also be accesed by clicking on this <b><a href="http://pb18.pythonanywhere.com/">link</a></b>.
 
 <img src="https://i.imgur.com/er4vsob.png" alt="Property Dashboard">
