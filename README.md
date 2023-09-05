@@ -1,6 +1,6 @@
-# Sydney Property Market Dashboard
+# Sydney Property Data Dashboard
 
-A user-friendly Dash application that allows users to view property data for suburbs in the Greater Sydney area of New South Wales, Australia. With this dashboard, you can access a variety of key property market indicators, including a area map, quarterly rental and price trends, and demographic information. Demographic information is based on the latest 2021 census data. 
+A user-friendly Dash application that allows users to view property data for suburbs in the Greater Sydney area of New South Wales, Australia. With this dashboard, you can access a variety of key property market indicators, including an area map, quarterly rental and price trends, and demographic information. Demographic information is based on the latest 2021 census data. 
 
 To use the dashboard, run <code>python3 Dashboard.py</code>
 
