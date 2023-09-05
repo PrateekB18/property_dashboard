@@ -6,6 +6,6 @@ To use the dashboard, run <code>python3 Dashboard.py</code>
 
 <b>Note:</b> To use the area map feature, you'll need to obtain a Google Map Embed API key. 
 
-An enhanced dashboard with a loan calculator, dynamic data switching, and a decade of historical data can be accessed by clicking on this <b><a href="http://pb18.pythonanywhere.com/">link</a></b>.
+<b><em>An enhanced dashboard with a loan calculator, dynamic data switching, and a decade of historical data can be accessed by clicking on this <b><a href="http://pb18.pythonanywhere.com/">link</a></b>. </b></em>
 
 <img src="https://i.imgur.com/er4vsob.png" alt="Property Dashboard">
